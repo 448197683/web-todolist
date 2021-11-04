@@ -1,6 +1,6 @@
 import express from 'express';
 import path from 'path';
-import { db } from './db.js';
+import { db, counter } from './db.js';
 
 export const app = express();
 
@@ -19,13 +19,27 @@ app.get('/todo', (req, res) => {
 
 app.post('/todo', async (req, res) => {
   console.log(req.body);
-  const saveTodo = await db
-    .collection('todos')
-    .insertOne({ todo: req.body.todo });
-  res.redirect('/list');
+  try {
+    const saveTodo = await db.collection('todos').insertOne({
+      todo: req.body.todo,
+      createdAt: req.body.createdAt,
+      _id: counter.count + 1,
+    });
+    const addCount = await db
+      .collection('counter')
+      .updateOne({ name: counter }, { $inc: { count: +1 } });
+    res.redirect('/list');
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.get('/list', async (req, res) => {
-  const todolists = await db.collection('todos').find().toArray();
-  res.status(200).render('list.ejs', { todolists });
+  try {
+    const todolists = await db.collection('todos').find().toArray();
+    console.log(todolists);
+    res.status(200).render('list.ejs', { todolists });
+  } catch (error) {
+    console.log(error);
+  }
 });

@@ -5,10 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script defer src="/js/list.js"></script>
   </head>
   <body>
-    <%- include('./NAV.ejs')%> <%todolists.forEach((todo)=>{%>
-    <p><%=todo.todo%></p>
-    <%})%>
+    <%- include('./NAV.ejs')%>
+    <%for(let i = 0;i<todolists.length;i++){%>
+      <p><%=todolists[i].todo%></p>
+      <p><%=todolists[i].createdAt%></p>
+      <button id="<%=i%>">Delete</button>
+      <%}%>
   </body>
 </html>
