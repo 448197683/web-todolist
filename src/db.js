@@ -12,11 +12,12 @@ export const connectDB = async () => {
     await client.connect();
     console.log(`DB is connect to Mongo Server`);
     db = client.db(dbName);
-    counter = await db.collection('counter').findOne({ name: 'counter' });
+    counter = await db.collection('counter').findOne({ name: `counter` });
     if (!counter) {
       counter = await db
         .collection('counter')
         .insertOne({ name: 'counter', count: 0 });
+      counter.count = 0;
     }
   } catch (error) {
     console.log(error);

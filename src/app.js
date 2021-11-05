@@ -25,10 +25,11 @@ app.post('/todo', async (req, res) => {
       createdAt: req.body.createdAt,
       _id: counter.count + 1,
     });
-    const addCount = await db
+    counter.count = counter.count + 1;
+    const addConunter = await db
       .collection('counter')
-      .updateOne({ name: counter }, { $inc: { count: +1 } });
-    res.redirect('/list');
+      .updateOne({ name: 'counter' }, { $set: { count: counter.count } });
+    return res.redirect('/list');
   } catch (error) {
     console.log(error);
   }
