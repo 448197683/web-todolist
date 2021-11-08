@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script defer src="/js/list.js"></script>
-  </head>
+<%- include('./components/HEADER.ejs')%>
   <body>
-    <%- include('./NAV.ejs')%>
+    <%- include('./components/NAV.ejs')%>
     <%for(let i = 0;i<todolists.length;i++){%>
+      <div id="<%=todolists[i]._id%>">
       <p><%=todolists[i].todo%></p>
       <p><%=todolists[i].createdAt%></p>
-      <button id="<%=i%>">Delete</button>
+      <button type="button" class="btn btn-danger">DELETE</button>
+      </div>
       <%}%>
   </body>
 </html>

@@ -44,3 +44,16 @@ app.get('/list', async (req, res) => {
     console.log(error);
   }
 });
+
+app.delete('/delete', async (req, res) => {
+  console.log(req.body);
+  try {
+    const delTodo = await db
+      .collection('todos')
+      .deleteOne({ _id: Number(req.body.delID) });
+    console.log(delTodo);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+  }
+});
