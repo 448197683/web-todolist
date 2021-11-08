@@ -1,4 +1,5 @@
 const delBtns = document.querySelectorAll('button');
+console.log(delBtns);
 
 delBtns.forEach((delBtn) => {
   delBtn.addEventListener('click', async () => {

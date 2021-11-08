@@ -1,6 +1,12 @@
-<%- include('./components/HEADER.ejs')%>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./components/HEADER.ejs')%>
+    <script defer src="./js/list.js"></script>
+  </head>
   <body>
     <%- include('./components/NAV.ejs')%>
+    <div class="container mt-5">
     <%for(let i = 0;i<todolists.length;i++){%>
       <div id="<%=todolists[i]._id%>">
       <p><%=todolists[i].todo%></p>
@@ -8,5 +14,6 @@
       <button type="button" class="btn btn-danger">DELETE</button>
       </div>
       <%}%>
+    </div>
   </body>
 </html>
