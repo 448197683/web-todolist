@@ -45,15 +45,20 @@ app.get('/list', async (req, res) => {
   }
 });
 
-app.delete('/delete', async (req, res) => {
-  console.log(req.body);
+app.delete('/delete/:id', async (req, res) => {
+  console.log(req.params);
   try {
     const delTodo = await db
       .collection('todos')
-      .deleteOne({ _id: Number(req.body.delID) });
+      .deleteOne({ _id: Number(req.params.id) });
     console.log(delTodo);
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
   }
+});
+
+app.get(`/description/:id`, (req, res) => {
+  console.log(req.params);
+  res.status(200).render('description.ejs');
 });

@@ -8,11 +8,13 @@
     <%- include('./components/NAV.ejs')%>
     <div class="container mt-5">
     <%for(let i = 0;i<todolists.length;i++){%>
+    <a href="#" class="link" id="<%=todolists[i]._id%>">
       <div id="<%=todolists[i]._id%>">
       <p><%=todolists[i].todo%></p>
       <p><%=todolists[i].createdAt%></p>
       <button type="button" class="btn btn-danger">DELETE</button>
       </div>
+    </a>
       <%}%>
     </div>
   </body>
