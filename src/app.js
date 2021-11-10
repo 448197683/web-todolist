@@ -58,7 +58,15 @@ app.delete('/delete/:id', async (req, res) => {
   }
 });
 
-app.get(`/description/:id`, (req, res) => {
+app.get(`/description/:id`, async (req, res) => {
   console.log(req.params);
-  res.status(200).render('description.ejs');
+  const getTodo = await db
+    .collection('todos')
+    .findOne({ _id: Number(req.params.id) });
+  console.log(getTodo);
+  res.status(200).render('description.ejs', { todolist: getTodo });
+});
+
+app.put('/description/:id', (req, res) => {
+  console.log(req.params, req.body);
 });
