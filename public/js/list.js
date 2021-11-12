@@ -1,10 +1,8 @@
 const linkBtns = document.querySelectorAll('.link');
-console.log(linkBtns);
 
 linkBtns.forEach((linkBtn) => {
   linkBtn.addEventListener('click', async (e) => {
     e.preventDefault();
-    console.log(linkBtn.id);
     try {
       const descFetch = await fetch(
         `http://localhost:8080/description/${linkBtn.id}`

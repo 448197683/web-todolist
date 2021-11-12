@@ -3,7 +3,6 @@ const edidBtn = document.querySelector('#editBtn');
 const doneBtn = document.querySelector('#doneBtn');
 const editForm = document.querySelector('#editForm');
 const editInput = document.querySelector('input');
-console.log(editForm);
 
 delBtn.addEventListener('click', async () => {
   const delID = delBtn.parentElement.id;
@@ -27,8 +26,6 @@ edidBtn.addEventListener('click', (e) => {
 
 doneBtn.addEventListener('click', async (e) => {
   e.preventDefault();
-  /*   editForm.classList.add('hide');
-  edidBtn.parentElement.classList.remove('hide'); */
   const currentUrl = window.location.href;
   const id = currentUrl.split('/')[4];
   const value = e.target.parentElement[0].value;
@@ -41,6 +38,12 @@ doneBtn.addEventListener('click', async (e) => {
         'Content-Type': 'application/json',
       },
     });
+    console.log(editFetch.status);
+    if (editFetch.status === 200) {
+      editForm.classList.add('hide');
+      edidBtn.parentElement.classList.remove('hide');
+      document.querySelector('p').innerHTML = value;
+    }
   } catch (error) {
     console.log(error);
   }

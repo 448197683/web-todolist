@@ -18,7 +18,6 @@ app.get('/todo', (req, res) => {
 });
 
 app.post('/todo', async (req, res) => {
-  console.log(req.body);
   try {
     const saveTodo = await db.collection('todos').insertOne({
       todo: req.body.todo,
@@ -46,7 +45,6 @@ app.get('/list', async (req, res) => {
 });
 
 app.delete('/delete/:id', async (req, res) => {
-  console.log(req.params);
   try {
     const delTodo = await db
       .collection('todos')
@@ -59,14 +57,28 @@ app.delete('/delete/:id', async (req, res) => {
 });
 
 app.get(`/description/:id`, async (req, res) => {
-  console.log(req.params);
   const getTodo = await db
     .collection('todos')
     .findOne({ _id: Number(req.params.id) });
   console.log(getTodo);
+  if (!getTodo) {
+    return res.status(403).render('403.ejs');
+  }
   res.status(200).render('description.ejs', { todolist: getTodo });
 });
 
-app.put('/description/:id', (req, res) => {
+app.put('/description/:id', async (req, res) => {
   console.log(req.params, req.body);
+  try {
+    const editTodo = await db
+      .collection('todos')
+      .updateOne(
+        { _id: Number(req.params.id) },
+        { $set: { todo: req.body.value } }
+      );
+    res.status(200).end();
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(editTodo);
 });
