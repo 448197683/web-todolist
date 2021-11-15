@@ -7,14 +7,18 @@
   <body>
     <%- include('./components/NAV.ejs')%>
     <div class="container mt-5">
+      <div class="list-group">
     <%for(let i = 0;i<todolists.length;i++){%>
-    <a href="#" class="link" id="<%=todolists[i]._id%>">
-      <div id="<%=todolists[i]._id%>">
-      <p><%=todolists[i].todo%></p>
-      <p><%=todolists[i].createdAt%></p>
-      </div>
-    </a>
+      <a href="#" class="list-group-item list-group-item-action link" aria-current="true" id="<%=todolists[i]._id%>">
+        <div class="d-flex w-100 justify-content-between" id="<%=todolists[i]._id%>">
+          <h5 class="mb-1"><%=todolists[i].todo%></h5>
+          <small><%=createdAtArray[i]%></small>
+        </div>  
+      </a>
       <%}%>
+    </div>
     </div>
   </body>
 </html>
+
+  

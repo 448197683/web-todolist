@@ -1,3 +1,4 @@
+import { time } from 'console';
 import express from 'express';
 import path from 'path';
 import { db, counter } from './db.js';
@@ -18,10 +19,11 @@ app.get('/todo', (req, res) => {
 });
 
 app.post('/todo', async (req, res) => {
+  const currentTime = Math.floor(new Date().getTime() / (1000 * 60)); // seconds
   try {
     const saveTodo = await db.collection('todos').insertOne({
       todo: req.body.todo,
-      createdAt: req.body.createdAt,
+      createdAt: currentTime,
       _id: counter.count + 1,
     });
     counter.count = counter.count + 1;
@@ -34,17 +36,42 @@ app.post('/todo', async (req, res) => {
   }
 });
 
+const createdAt = (oldTime) => {
+  const currentTime = Math.floor(new Date().getTime() / (1000 * 60));
+  const calTime = currentTime - oldTime;
+  let resultTime;
+  if (calTime < 60) {
+    return `${calTime < 2 ? `1 minute ago` : `${calTime} minutes ago`}`;
+  } else if (calTime >= 60 && calTime < 60 * 24) {
+    resultTime = Math.floor(calTime / 60);
+    return `${resultTime < 2 ? `1 hour aog` : `${resultTime}hours ago`}`;
+  } else if (calTime >= 60 * 24 && calTime < 60 * 24 * 30) {
+    resultTime = Math.floor(calTime / (60 * 24));
+    return `${resultTime < 2 ? `1 day ago` : `${resultTime} days ago`}`;
+  } else if (calTime >= 60 * 24 * 30 && calTime < 60 * 24 * 30 * 12) {
+    resultTime = Math.floor(calTime / (60 * 24 * 30));
+    return `${resultTime < 2 ? `1 month ago` : `${resultTime} months ago`}`;
+  } else {
+    resultTime = Math.floor(calTime / (60 * 24 * 30 * 12));
+    return `${resultTime < 2 ? `1 year aog` : `${resultTime} years ago`}`;
+  }
+};
+
 app.get('/list', async (req, res) => {
+  const createdAtArray = [];
   try {
     const todolists = await db.collection('todos').find().toArray();
-    console.log(todolists);
-    res.status(200).render('list.ejs', { todolists });
+    todolists.forEach((todolist) => {
+      createdAtArray.push(createdAt(todolist.createdAt));
+    });
+    console.log(createdAtArray);
+    res.status(200).render('list.ejs', { todolists, createdAtArray });
   } catch (error) {
     console.log(error);
   }
 });
 
-app.delete('/delete/:id', async (req, res) => {
+app.delete('/description/:id', async (req, res) => {
   try {
     const delTodo = await db
       .collection('todos')
@@ -74,11 +101,10 @@ app.put('/description/:id', async (req, res) => {
       .collection('todos')
       .updateOne(
         { _id: Number(req.params.id) },
-        { $set: { todo: req.body.value } }
+        { $set: { todo: req.body.value, createdAt: new Date().getTime() } }
       );
     res.status(200).end();
   } catch (error) {
     console.log(error);
   }
-  console.log(editTodo);
 });

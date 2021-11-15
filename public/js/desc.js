@@ -7,7 +7,7 @@ const editInput = document.querySelector('input');
 delBtn.addEventListener('click', async () => {
   const delID = delBtn.parentElement.id;
   try {
-    const delFetch = await fetch(`http://localhost:8080/delete/${delID}`, {
+    const delFetch = await fetch(`http://localhost:8080/description/${delID}`, {
       method: 'delete',
     });
     console.log(delFetch.status);
